@@ -40,7 +40,7 @@ export class AuthorizationService {
       const response: Promise<AxiosResponse<TokenResponse>> = axios.post<typeof data, AxiosResponse<TokenResponse>>("https://gitee.com/oauth/token", data, {
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
-        }
+        },
       });
 
       response.then((res: AxiosResponse<TokenResponse>) => {
@@ -58,12 +58,21 @@ export class AuthorizationService {
     const response: AxiosResponse<TokenResponse> = await axios.post<typeof data, AxiosResponse<TokenResponse>>("https://gitee.com/oauth/token", data, {
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
-      }
+      },
     });
 
     return new TokenInfo(response.data.access_token, response.data.refresh_token, new Date(response.data.created_at), new Date(response.data.created_at));
   }
 
+  /**
+   * generate access token by password and email
+   *
+   * @param email         user email
+   * @param password      user password
+   * @param clientId      client id
+   * @param clientSecret  client secret
+   * @param callback      callback function
+   */
   public static generateAccessTokenByPassword(email: string, password: string, clientId: string, clientSecret: string, callback: (err: unknown, data: TokenInfo | undefined) => void): void;
   public static generateAccessTokenByPassword(email: string, password: string, clientId: string, clientSecret: string): Promise<TokenInfo>;
 
@@ -81,15 +90,15 @@ export class AuthorizationService {
       password: pwd,
       client_id: clientId,
       client_secret: clientSecret,
-      scope: "user_info projects pull_requests issues notes keys hook groups gists enterprises"
+      scope: "user_info projects pull_requests issues notes keys hook groups gists enterprises",
     };
 
     if (callback !== undefined) {
       // use callback to accept
       const response: Promise<AxiosResponse<TokenResponse>> = axios.post<typeof data, AxiosResponse<TokenResponse>>("https://gitee.com/oauth/token", data, {
         headers: {
-          "Content-Type": "application/x-www-form-urlencoded"
-        }
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
       });
 
       response.then((res: AxiosResponse<TokenResponse>) => {
@@ -106,8 +115,8 @@ export class AuthorizationService {
     // return value
     const response: AxiosResponse<TokenResponse> = await axios.post<typeof data, AxiosResponse<TokenResponse>>("https://gitee.com/oauth/token", data, {
       headers: {
-        "Content-Type": "application/x-www-form-urlencoded"
-      }
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
     });
 
     return new TokenInfo(response.data.access_token, response.data.refresh_token, new Date(response.data.created_at), new Date(response.data.created_at));
