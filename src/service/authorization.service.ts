@@ -49,7 +49,7 @@ export class AuthorizationService {
         callback(undefined, tokenInfo);
         return;
       }).catch((err: any) => {
-        console.info("Authorize failed, error: ", err.message);
+        console.error("Authorize failed, error: ", err.message);
         callback(err, undefined);
         return;
       });
@@ -58,6 +58,55 @@ export class AuthorizationService {
     const response: AxiosResponse<TokenResponse> = await axios.post<typeof data, AxiosResponse<TokenResponse>>("https://gitee.com/oauth/token", data, {
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
+      }
+    });
+
+    return new TokenInfo(response.data.access_token, response.data.refresh_token, new Date(response.data.created_at), new Date(response.data.created_at));
+  }
+
+  public static generateAccessTokenByPassword(email: string, password: string, clientId: string, clientSecret: string, callback: (err: unknown, data: TokenInfo | undefined) => void): void;
+  public static generateAccessTokenByPassword(email: string, password: string, clientId: string, clientSecret: string): Promise<TokenInfo>;
+
+  public static async generateAccessTokenByPassword(email: string, pwd: string, clientId: string, clientSecret: string, callback?: (err: unknown, data: TokenInfo | undefined) => void): Promise<void | TokenInfo> {
+    const data: {
+      grant_type: string,
+      username: string,
+      password: string,
+      client_id: string,
+      client_secret: string,
+      scope: string
+    } = {
+      grant_type: "password",
+      username: email,
+      password: pwd,
+      client_id: clientId,
+      client_secret: clientSecret,
+      scope: "user_info projects pull_requests issues notes keys hook groups gists enterprises"
+    };
+
+    if (callback !== undefined) {
+      // use callback to accept
+      const response: Promise<AxiosResponse<TokenResponse>> = axios.post<typeof data, AxiosResponse<TokenResponse>>("https://gitee.com/oauth/token", data, {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        }
+      });
+
+      response.then((res: AxiosResponse<TokenResponse>) => {
+        const tokenInfo: TokenInfo = new TokenInfo(res.data.access_token, res.data.refresh_token, new Date(res.data.created_at), new Date(res.data.created_at));
+        console.info("Authorize success (with password)!");
+        callback(undefined, tokenInfo);
+        return;
+      }).catch((err: any) => {
+        console.error("Authorize failed, error: ", err.message);
+        callback(err, undefined);
+        return;
+      });
+    }
+    // return value
+    const response: AxiosResponse<TokenResponse> = await axios.post<typeof data, AxiosResponse<TokenResponse>>("https://gitee.com/oauth/token", data, {
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
       }
     });
 
