@@ -27,5 +27,5 @@ export interface TokenResponse {
   /**
    * created at
    */
-  created_at: number;
+  created_at: string;
 }
