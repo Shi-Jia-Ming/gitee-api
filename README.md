@@ -1,7 +1,7 @@
 # Gitee API
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![README](https://img.shields.io/badge/README-%E4%B8%AD%E6%96%87-blue)](README_zh)
+[![README](https://img.shields.io/badge/README-%E4%B8%AD%E6%96%87-blue)](README_zh.md)
 
 ---
 

@@ -1,4 +1,4 @@
-# Gitee API
+# Gitee 平台  API
 
 [![许可证](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![README](https://img.shields.io/badge/README-English-blue)](README.md)
