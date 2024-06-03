@@ -44,7 +44,7 @@ export class AuthorizationService {
       });
 
       response.then((res: AxiosResponse<TokenResponse>) => {
-        const tokenInfo: TokenInfo = new TokenInfo(res.data.access_token, res.data.refresh_token, new Date(res.data.created_at), new Date(res.data.created_at));
+        const tokenInfo: TokenInfo = new TokenInfo(res.data!);
         console.info("Authorize success (with code)!");
         callback(undefined, tokenInfo);
         return;
@@ -61,7 +61,7 @@ export class AuthorizationService {
       },
     });
 
-    return new TokenInfo(response.data.access_token, response.data.refresh_token, new Date(response.data.created_at), new Date(response.data.created_at));
+    return new TokenInfo(response.data!);
   }
 
   /**
@@ -102,7 +102,7 @@ export class AuthorizationService {
       });
 
       response.then((res: AxiosResponse<TokenResponse>) => {
-        const tokenInfo: TokenInfo = new TokenInfo(res.data.access_token, res.data.refresh_token, new Date(res.data.created_at), new Date(res.data.created_at));
+        const tokenInfo: TokenInfo = new TokenInfo(res.data!);
         console.info("Authorize success (with password)!");
         callback(undefined, tokenInfo);
         return;
@@ -119,7 +119,7 @@ export class AuthorizationService {
       },
     });
 
-    return new TokenInfo(response.data.access_token, response.data.refresh_token, new Date(response.data.created_at), new Date(response.data.created_at));
+    return new TokenInfo(response.data!);
   }
 
   /**
@@ -149,7 +149,7 @@ export class AuthorizationService {
       });
 
       response.then((res: AxiosResponse<TokenResponse>) => {
-        const tokenInfo: TokenInfo = new TokenInfo(res.data.access_token, res.data.refresh_token, new Date(res.data.created_at), new Date(res.data.created_at));
+        const tokenInfo: TokenInfo = new TokenInfo(res.data!);
         console.info("Refresh success!");
         callback(undefined, tokenInfo);
         return;
@@ -166,6 +166,6 @@ export class AuthorizationService {
       },
     });
 
-    return new TokenInfo(response.data.access_token, response.data.refresh_token, new Date(response.data.created_at), new Date(response.data.created_at));
+    return new TokenInfo(response.data!);
   }
 }
