@@ -66,10 +66,10 @@ export default class UserInfoService {
    * @param perPage       number of each page
    * @param callback      callback function
    */
-  public static getPublicKeyList(accessToken: string, page: number, perPage: number, callback: (err: unknown, publicKeyInfo: undefined | PublicKeyInfo) => void): void;
-  public static getPublicKeyList(accessToken: string, page: number, perPage: number): Promise<PublicKeyResponse>;
+  public static getPublicKeyList(accessToken: string, page: number, perPage: number, callback: (err: unknown, publicKeyInfoList: undefined | PublicKeyInfo[]) => void): void;
+  public static getPublicKeyList(accessToken: string, page: number, perPage: number): Promise<PublicKeyResponse[]>;
 
-  public static async getPublicKeyList(accessToken: string, pg: number, perPage: number, callback?: (err: unknown, publicKeyInfo: undefined | PublicKeyResponse) => void): Promise<void | PublicKeyInfo> {
+  public static async getPublicKeyList(accessToken: string, pg: number, perPage: number, callback?: (err: unknown, publicKeyInfoList: undefined | PublicKeyInfo[]) => void): Promise<void | PublicKeyInfo[]> {
     const data: {
       access_token: string,
       page: number,
@@ -82,17 +82,20 @@ export default class UserInfoService {
 
     if (callback !== undefined) {
       // use callback to accept
-      const response: Promise<AxiosResponse<PublicKeyResponse>> = axios.get<typeof data, AxiosResponse<PublicKeyResponse>>("https://gitee.com/api/v5/user/keys", {
+      const response: Promise<AxiosResponse<PublicKeyResponse[]>> = axios.get<typeof data, AxiosResponse<PublicKeyResponse[]>>("https://gitee.com/api/v5/user/keys", {
         params: data,
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
         },
       });
 
-      response.then((res: AxiosResponse<PublicKeyResponse>) => {
-        const publicKeyInfo: PublicKeyInfo = new PublicKeyInfo(res.data!);
+      response.then((res: AxiosResponse<PublicKeyResponse[]>) => {
+        const publicKeyInfoList: PublicKeyInfo[] = [];
+        res.data.forEach((publicKeyResponse: PublicKeyResponse) => {
+          publicKeyInfoList.push(new PublicKeyInfo(publicKeyResponse));
+        });
         console.info("Get public key list success!");
-        callback(undefined, publicKeyInfo);
+        callback(undefined, publicKeyInfoList);
         return;
       }).catch((err: any) => {
         console.error("Get public key list failed, error: ", err.message);
@@ -101,13 +104,17 @@ export default class UserInfoService {
       });
     }
     // return value
-    const response: AxiosResponse<PublicKeyResponse> = await axios.get<typeof data, AxiosResponse<PublicKeyResponse>>("https://gitee.com/api/v5/user/keys", {
+    const response: AxiosResponse<PublicKeyResponse[]> = await axios.get<typeof data, AxiosResponse<PublicKeyResponse[]>>("https://gitee.com/api/v5/user/keys", {
       params: data,
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
       },
     });
 
-    return new PublicKeyInfo(response.data!);
+    const publicKeyInfoList: PublicKeyInfo[] = [];
+    response.data.forEach((publicKeyResponse: PublicKeyResponse) => {
+      publicKeyInfoList.push(new PublicKeyInfo(publicKeyResponse));
+    });
+    return publicKeyInfoList;
   }
 }
