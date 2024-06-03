@@ -1,6 +1,8 @@
+import { UserInfoResponse } from "../interface/user.info.response";
+
 /**
  * user info entity
- * 
+ *
  * @author: Shi-Jia-Ming
  */
 export default class UserInfo {
@@ -17,7 +19,7 @@ export default class UserInfo {
    */
   public name?: string;
   /**
-   * user acatar url
+   * user avatar url
    */
   public avatarUrl?: string;
   /**
@@ -84,4 +86,100 @@ export default class UserInfo {
    * watched repositories count
    */
   public watched?: number;
+
+  constructor(
+    id: number,
+    login: string,
+    name: string,
+    avatarUrl: string,
+    htmlUrl: string,
+    staredUrl: string,
+    organizationUrl: string,
+    reposUrl: string,
+    eventsUrl: string,
+    receivedEventsUrl: string,
+    type: string,
+    blog: string,
+    weibo: string,
+    bio: string,
+    publicRepos: number,
+    publicGists: number,
+    followers: number,
+    following: number,
+    stared: number,
+    watched: number
+  );
+
+  // tslint:disable-next-line:unified-signatures
+  constructor(userInfoResponse: UserInfoResponse);
+  constructor();
+
+  constructor(
+    idOrUserInfoResponse?: number | UserInfoResponse,
+    login?: string,
+    name?: string,
+    avatarUrl?: string,
+    htmlUrl?: string,
+    staredUrl?: string,
+    organizationUrl?: string,
+    reposUrl?: string,
+    eventsUrl?: string,
+    receivedEventsUrl?: string,
+    type?: string,
+    blog?: string,
+    weibo?: string,
+    bio?: string,
+    publicRepos?: number,
+    publicGists?: number,
+    followers?: number,
+    following?: number,
+    stared?: number,
+    watched?: number
+  ) {
+    if (typeof idOrUserInfoResponse === "number") {
+      // realize of the first overload
+      this.id = idOrUserInfoResponse;
+      this.login = login;
+      this.name = name;
+      this.avatarUrl = avatarUrl;
+      this.htmlUrl = htmlUrl;
+      this.staredUrl = staredUrl;
+      this.organizationUrl = organizationUrl;
+      this.reposUrl = reposUrl;
+      this.eventsUrl = eventsUrl;
+      this.receivedEventsUrl = receivedEventsUrl;
+      this.type = type;
+      this.blog = blog;
+      this.weibo = weibo;
+      this.bio = bio;
+      this.publicRepos = publicRepos;
+      this.publicGists = publicGists;
+      this.followers = followers;
+      this.following = following;
+      this.stared = stared;
+      this.watched = watched;
+    } else if (idOrUserInfoResponse) {
+      // realize of the second overload
+      this.id = idOrUserInfoResponse.id;
+      this.login = idOrUserInfoResponse.login;
+      this.name = idOrUserInfoResponse.name;
+      this.avatarUrl = idOrUserInfoResponse.avatar_url;
+      this.htmlUrl = idOrUserInfoResponse.html_url;
+      this.staredUrl = idOrUserInfoResponse.starred_url;
+      this.organizationUrl = idOrUserInfoResponse.organizations_url;
+      this.reposUrl = idOrUserInfoResponse.repos_url;
+      this.eventsUrl = idOrUserInfoResponse.events_url;
+      this.receivedEventsUrl = idOrUserInfoResponse.received_events_url;
+      this.type = idOrUserInfoResponse.type;
+      this.blog = idOrUserInfoResponse.blog;
+      this.weibo = idOrUserInfoResponse.weibo;
+      this.bio = idOrUserInfoResponse.bio;
+      this.publicRepos = idOrUserInfoResponse.public_repos;
+      this.publicGists = idOrUserInfoResponse.public_gists;
+      this.followers = idOrUserInfoResponse.followers;
+      this.following = idOrUserInfoResponse.following;
+      this.stared = idOrUserInfoResponse.stared;
+      this.watched = idOrUserInfoResponse.watched;
+    }
+  }
 }
