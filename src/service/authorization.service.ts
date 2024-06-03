@@ -121,4 +121,51 @@ export class AuthorizationService {
 
     return new TokenInfo(response.data.access_token, response.data.refresh_token, new Date(response.data.created_at), new Date(response.data.created_at));
   }
+
+  /**
+   * refresh access token by refresh token
+   *
+   * @param refreshToken  refresh token
+   * @param callback      callback function
+   */
+  public static refreshAccessToken(refreshToken: string, callback: (err: unknown, data: TokenInfo | undefined) => void): void;
+  public static refreshAccessToken(refreshToken: string): Promise<TokenInfo>;
+
+  public static async refreshAccessToken(refreshToken: string, callback?: (err: unknown, data: TokenInfo | undefined) => void): Promise<void | TokenInfo> {
+    const data: {
+      grant_type: string,
+      refresh_token: string
+    } = {
+      grant_type: "refresh_token",
+      refresh_token: refreshToken,
+    };
+
+    if (callback !== undefined) {
+      // use callback to accept
+      const response: Promise<AxiosResponse<TokenResponse>> = axios.post<typeof data, AxiosResponse<TokenResponse>>("https://gitee.com/oauth/token", data, {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      });
+
+      response.then((res: AxiosResponse<TokenResponse>) => {
+        const tokenInfo: TokenInfo = new TokenInfo(res.data.access_token, res.data.refresh_token, new Date(res.data.created_at), new Date(res.data.created_at));
+        console.info("Refresh success!");
+        callback(undefined, tokenInfo);
+        return;
+      }).catch((err: any) => {
+        console.error("Refresh failed, error: ", err.message);
+        callback(err, undefined);
+        return;
+      });
+    }
+    // return value
+    const response: AxiosResponse<TokenResponse> = await axios.post<typeof data, AxiosResponse<TokenResponse>>("https://gitee.com/oauth/token", data, {
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    });
+
+    return new TokenInfo(response.data.access_token, response.data.refresh_token, new Date(response.data.created_at), new Date(response.data.created_at));
+  }
 }
