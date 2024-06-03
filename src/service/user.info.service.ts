@@ -46,7 +46,7 @@ export default class UserInfoService {
       });
     }
     // return value
-    const response: AxiosResponse<UserInfoResponse> = await axios.post<typeof data, AxiosResponse<UserInfoResponse>>("https://gitee.com/api/v5/user", {
+    const response: AxiosResponse<UserInfoResponse> = await axios.get<typeof data, AxiosResponse<UserInfoResponse>>("https://gitee.com/api/v5/user", {
       params: data,
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
