@@ -43,4 +43,4 @@ test("getPublicKeyList callback", () => {
       }
     }
   )
-})
+});
