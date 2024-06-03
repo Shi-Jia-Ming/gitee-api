@@ -1,6 +1,7 @@
 import UserInfo from "../../entity/user.info";
 import UserInfoService from "../../service/user.info.service";
 import * as dotenv from "dotenv";
+import PublicKeyInfo from "../../entity/public.key.info";
 
 dotenv.config();
 
@@ -21,4 +22,25 @@ test("getUserInfo callback", () => {
       }
     },
   );
+});
+
+test("getPublicKeyList async", async () => {
+  const publicKeyInfoList: PublicKeyInfo[] = await UserInfoService.getPublicKeyList(
+    process.env.ACCESS_TOKEN as string,
+    1, 5
+  );
+
+  console.log(publicKeyInfoList);
+});
+
+test("getPublicKeyList callback", () => {
+  UserInfoService.getPublicKeyList(
+    process.env.ACCESS_TOKEN as string,
+    1, 5,
+    (err: unknown, publicKeyInfoList: undefined | PublicKeyInfo[]) => {
+      if (!err) {
+        console.log(publicKeyInfoList);
+      }
+    }
+  )
 });

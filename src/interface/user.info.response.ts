@@ -1,5 +1,7 @@
 /**
  * Response interface of getting user information
+ *
+ * @author: Shi-Jia-Ming
  */
 export interface UserInfoResponse {
   /**
