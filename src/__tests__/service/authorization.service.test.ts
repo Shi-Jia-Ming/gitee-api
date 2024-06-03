@@ -56,7 +56,7 @@ test("generateAccessTokenByPassword callback", () => {
   )
 });
 
-test.only("refreshAccessToken async", async () => {
+test("refreshAccessToken async", async () => {
   const tokenInfo: TokenInfo = await AuthorizationService.refreshAccessToken(
     process.env.REFRESH_TOKEN as string
   );
