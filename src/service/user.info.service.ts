@@ -117,4 +117,64 @@ export default class UserInfoService {
     });
     return publicKeyInfoList;
   }
+
+  /**
+   * get information list of user's followers
+   *
+   * @param accessToken   access token
+   * @param page          page number
+   * @param perPage       number of each page
+   * @param callback      callback function
+   */
+  public static getUserFollowerList(accessToken: string, page: number, perPage: number, callback: (err: unknown, followerInfoList: undefined | UserInfo[]) => void): void;
+  public static getUserFollowerList(accessToken: string, page: number, perPage: number): Promise<UserInfo[]>;
+
+  public static async getUserFollowerList(accessToken: string, pg: number, perPage: number, callback?: (err: unknown, followerInfoList: undefined | UserInfo[]) => void): Promise<void | UserInfo[]> {
+    const data: {
+      access_token: string,
+      page: number,
+      per_page: number
+    } = {
+      access_token: accessToken,
+      page: pg,
+      per_page: perPage
+    };
+
+    if (callback !== undefined) {
+      // use callback to accept
+      const response: Promise<AxiosResponse<UserInfoResponse[]>> = axios.get<typeof data, AxiosResponse<UserInfoResponse[]>>("https://gitee.com/api/v5/user/followers", {
+        params: data,
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      });
+
+      response.then((res: AxiosResponse<UserInfoResponse[]>) => {
+        const followerInfoList: UserInfo[] = [];
+        res.data.forEach((userInfoResponse: UserInfoResponse) => {
+          followerInfoList.push(new UserInfo(userInfoResponse));
+        });
+        console.info("Get follower information list success!");
+        callback(undefined, followerInfoList);
+        return;
+      }).catch((err: any) => {
+        console.error("Get follower information list failed, error: ", err.message);
+        callback(err, undefined);
+        return;
+      });
+    }
+    // return value
+    const response: AxiosResponse<UserInfoResponse[]> = await axios.get<typeof data, AxiosResponse<UserInfoResponse[]>>("https://gitee.com/api/v5/user/followers", {
+      params: data,
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    });
+
+    const followerInfoList: UserInfo[] = [];
+    response.data.forEach((userInfoResponse: UserInfoResponse) => {
+      followerInfoList.push(new UserInfo(userInfoResponse));
+    });
+    return followerInfoList;
+  }
 }
