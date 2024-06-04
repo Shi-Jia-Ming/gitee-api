@@ -65,3 +65,24 @@ test("getUserFollowerList callback", () => {
     }
   );
 });
+
+test("getUserFollowingList async", async () => {
+  const followingInfoList: UserInfo[] = await UserInfoService.getUserFollowingList(
+    process.env.ACCESS_TOKEN as string,
+    1, 5,
+  );
+
+  console.log(followingInfoList);
+});
+
+test("getUserFollowingList callback", () => {
+  UserInfoService.getUserFollowingList(
+    process.env.ACCESS_TOKEN as string,
+    1, 5,
+    (err: unknown, followingInfoList: undefined | UserInfo[]) => {
+      if (!err) {
+        console.log(followingInfoList);
+      }
+    }
+  );
+});
