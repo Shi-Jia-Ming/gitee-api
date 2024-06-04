@@ -44,3 +44,24 @@ test("getPublicKeyList callback", () => {
     }
   )
 });
+
+test("getUserFollowerList async", async () => {
+  const followerInfoList: UserInfo[] = await UserInfoService.getUserFollowerList(
+    process.env.ACCESS_TOKEN as string,
+    1, 5
+  );
+
+  console.log(followerInfoList);
+});
+
+test("getUserFollowerList callback", () => {
+  UserInfoService.getUserFollowerList(
+    process.env.ACCESS_TOKEN as string,
+    1, 5,
+    (err: unknown, followerInfoList: undefined | UserInfo[]) => {
+      if (!err) {
+        console.log(followerInfoList);
+      }
+    }
+  );
+});
