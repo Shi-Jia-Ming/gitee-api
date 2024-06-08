@@ -67,7 +67,7 @@ export default class UserInfoService {
    * @param callback      callback function
    */
   public static getPublicKeyList(accessToken: string, page: number, perPage: number, callback: (err: unknown, publicKeyInfoList: undefined | PublicKeyInfo[]) => void): void;
-  public static getPublicKeyList(accessToken: string, page: number, perPage: number): Promise<PublicKeyResponse[]>;
+  public static getPublicKeyList(accessToken: string, page: number, perPage: number): Promise<PublicKeyInfo[]>;
 
   public static async getPublicKeyList(accessToken: string, pg: number, perPage: number, callback?: (err: unknown, publicKeyInfoList: undefined | PublicKeyInfo[]) => void): Promise<void | PublicKeyInfo[]> {
     const data: {
