@@ -11,29 +11,27 @@ This project encapsulates the functionalities of the Gitee API, allowing callers
 
 This project is based on TypeScript. Project primarily uses the axios library for HTTP requests. You can refer to [Gitee API](https://gitee.com/api/v5/swagger) for the detail of requests.
 
-[//]: # (## Installation)
+## Installation
 
-[//]: # ()
-[//]: # (Run the following code to add the package to your project.)
+Run the following code to add the package to your project.
 
-[//]: # ()
-[//]: # (```shell)
+```shell
+npm install gitee-api
+```
 
-[//]: # (npm install gitee-api)
+## Usage
 
-[//]: # (```)
+Import the package in your project, and then you can use API functions provided in the package.
 
-[//]: # ()
-[//]: # (## Usage)
+```typescript
+// TODO
+```
 
-[//]: # ()
-[//]: # (TODO)
+You can refer to the [API reference](./docs/en/reference.md) for more help.
 
-[//]: # ()
-[//]: # (## Contributing)
+## Contributing
 
-[//]: # ()
-[//]: # (Contributions are welcome! Please follow the guidelines in [CONTRIBUTING.md]&#40;CONTRIBUTING.md&#41;.)
+Contributions are welcome! Please follow the guidelines in [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## License
 
