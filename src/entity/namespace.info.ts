@@ -62,9 +62,12 @@ export class NamespaceInfo {
     } else if (idOrNamespaceResponse) {
       this.id = idOrNamespaceResponse.id;
       this.name = idOrNamespaceResponse.name;
-      this.type = NamespaceType[idOrNamespaceResponse.type as keyof typeof NamespaceType];
-      this.path = idOrNamespaceResponse.title;
-      this.htmlUrl = idOrNamespaceResponse.url;
+      this.type = idOrNamespaceResponse.type === "enterprise" ? NamespaceType.ENTERPRISE :
+        idOrNamespaceResponse.type === "group" ? NamespaceType.GROUP :
+          idOrNamespaceResponse.type === "null" ? NamespaceType.NULL :
+            idOrNamespaceResponse.type === "personal" ? NamespaceType.PERSONAL : NamespaceType.NULL;
+      this.htmlUrl = idOrNamespaceResponse.html_url;
+      this.path = idOrNamespaceResponse.path;
       if (idOrNamespaceResponse.parent) {
         this.parent = new NamespaceInfo(idOrNamespaceResponse.parent);
       }
@@ -79,7 +82,7 @@ export enum NamespaceType {
   /**
    * namespace type: enterprise
    */
-  ENTERPRISE = "Enterprise",
+  ENTERPRISE = "enterprise",
   /**
    * namespace type: user
    */
@@ -87,5 +90,9 @@ export enum NamespaceType {
   /**
    * namespace type: organization
    */
-  GROUP = "Group"
+  GROUP = "group",
+  /**
+   * personal namespace
+   */
+  PERSONAL = "personal",
 }

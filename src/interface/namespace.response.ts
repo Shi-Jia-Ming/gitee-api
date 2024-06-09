@@ -13,13 +13,13 @@ export interface NamespaceResponse {
    */
   name?: string;
   /**
-   * title
+   * html url
    */
-  title?: string;
+  html_url?: string;
   /**
-   * url to get detail information
+   * path to get detail information
    */
-  url?: string;
+  path?: string;
   /**
    * type
    * <ul>

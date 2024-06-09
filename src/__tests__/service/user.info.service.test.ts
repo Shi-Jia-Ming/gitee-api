@@ -2,6 +2,7 @@ import UserInfo from "../../entity/user.info";
 import UserInfoService from "../../service/user.info.service";
 import * as dotenv from "dotenv";
 import PublicKeyInfo from "../../entity/public.key.info";
+import { NamespaceInfo } from "../../entity/namespace.info";
 
 dotenv.config();
 
@@ -82,6 +83,27 @@ test("getUserFollowingList callback", () => {
     (err: unknown, followingInfoList: undefined | UserInfo[]) => {
       if (!err) {
         console.log(followingInfoList);
+      }
+    }
+  );
+});
+
+test("getUserNamespaceList async", async () => {
+  const namespaceList: NamespaceInfo[] = await UserInfoService.getUserNamespaceList(
+    process.env.ACCESS_TOKEN as string,
+    "project"
+  );
+
+  console.log(namespaceList);
+});
+
+test.only("getUserNamespaceList callback", () => {
+  UserInfoService.getUserNamespaceList(
+    process.env.ACCESS_TOKEN as string,
+    "project",
+    (err: unknown, namespaceList: undefined | NamespaceInfo[]) => {
+      if (!err) {
+        console.log(namespaceList);
       }
     }
   );
