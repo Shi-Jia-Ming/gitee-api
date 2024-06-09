@@ -256,6 +256,9 @@ export default class UserInfoService {
   public static getUserNamespaceList(accessToken: string, mode: string): Promise<NamespaceInfo[]>;
 
   public static async getUserNamespaceList(accessToken: string, searchMode: string, callback?: (err: unknown, namespaceList: undefined | NamespaceInfo[]) => void): Promise<void | NamespaceInfo[]> {
+    if (searchMode !== "all" && searchMode !== "project" && searchMode !== "intrant") {
+      throw new Error("Search mode is invalid!");
+    }
     const data: {
       access_token: string,
       mode: string
