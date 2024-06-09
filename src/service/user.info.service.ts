@@ -3,6 +3,8 @@ import axios, { AxiosResponse } from "axios";
 import { UserInfoResponse } from "../interface/user.info.response";
 import PublicKeyInfo from "../entity/public.key.info";
 import { PublicKeyResponse } from "../interface/public.key.response";
+import { NamespaceInfo } from "../entity/namespace.info";
+import { NamespaceResponse } from "../interface/namespace.response";
 
 /**
  * user information service
@@ -236,5 +238,70 @@ export default class UserInfoService {
       followingInfoList.push(new UserInfo(userInfoResponse));
     });
     return followingInfoList;
+  }
+
+  /**
+   * get information list of user's namespace
+   *
+   * @param accessToken   user access token
+   * @param mode          search mode
+   *    <ul>
+   *      <li>all: all namespace</li>
+   *      <li>project: project namespace</li>
+   *      <li>intrant: joined namespace</li>
+   *    </ul>
+   * @param callback      callback function
+   */
+  public static getUserNamespaceList(accessToken: string, mode: string, callback: (err: unknown, namespaceList: undefined | NamespaceInfo[]) => void): void;
+  public static getUserNamespaceList(accessToken: string, mode: string): Promise<NamespaceInfo[]>;
+
+  public static async getUserNamespaceList(accessToken: string, searchMode: string, callback?: (err: unknown, namespaceList: undefined | NamespaceInfo[]) => void): Promise<void | NamespaceInfo[]> {
+    if (searchMode !== "all" && searchMode !== "project" && searchMode !== "intrant") {
+      throw new Error("Search mode is invalid!");
+    }
+    const data: {
+      access_token: string,
+      mode: string
+    } = {
+      access_token: accessToken,
+      mode: searchMode
+    };
+
+    if (callback !== undefined) {
+      // use callback to accept
+      const response: Promise<AxiosResponse<NamespaceResponse[]>> = axios.get<typeof data, AxiosResponse<NamespaceResponse[]>>("https://gitee.com/api/v5/user/namespaces", {
+        params: data,
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      });
+
+      response.then((res: AxiosResponse<NamespaceResponse[]>) => {
+        const namespaceInfoList: NamespaceInfo[] = [];
+        res.data.forEach((namespaceResponse: NamespaceResponse) => {
+          namespaceInfoList.push(new NamespaceInfo(namespaceResponse));
+        });
+        console.info("Get namespace information list success!");
+        callback(undefined, namespaceInfoList);
+        return;
+      }).catch((err: any) => {
+        console.error("Get namespace information list failed, error: ", err.message);
+        callback(err, undefined);
+        return;
+      });
+    }
+    // return value
+    const response: AxiosResponse<NamespaceResponse[]> = await axios.get<typeof data, AxiosResponse<NamespaceResponse[]>>("https://gitee.com/api/v5/user/namespaces", {
+      params: data,
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    });
+
+    const namespaceInfoList: NamespaceInfo[] = [];
+    response.data.forEach((namespaceResponse: NamespaceResponse) => {
+      namespaceInfoList.push(new NamespaceInfo(namespaceResponse));
+    });
+    return namespaceInfoList;
   }
 }

@@ -249,3 +249,62 @@ Refer to the following instance:
 
 - getUserFollowingList async
 - getUserFollowingList callback
+
+## Get Information List of User's Namespace
+
+This api is to get information of user's namespace by user access token.
+
+### Function declare
+
+```typescript
+/**
+ * get information list of user's namespace
+ *
+ * @param accessToken   user access token
+ * @param mode          search mode
+ *    <ul>
+ *      <li>all: all namespace</li>
+ *      <li>project: project namespace</li>
+ *      <li>intrant: joined namespace</li>
+ *    </ul>
+ * @param callback      callback function
+ */
+public static getUserNamespaceList(accessToken: string, mode: string, callback: (err: unknown, namespaceList: undefined | NamespaceInfo[]) => void): void;
+public static getUserNamespaceList(accessToken: string, mode: string): Promise<NamespaceInfo[]>;
+```
+
+### Param Introduce
+
+- params:
+  - accessToken: user access token
+  - mode: search mode
+    - all: all namespace
+    - project: project namespace
+    - intrant: joined namespace
+
+- return value: NamespaceInfo[]
+  - id: namespace id
+  - name: namespace name
+  - path: namespace path
+  - type: namespace type
+  - htmlUrl: namespace html url
+  - parent: parent namespace
+
+### Usage
+
+This is a simple case of the API:
+
+```typescript
+const namespaceList: NamespaceInfo[] = await UserInfoService.getUserNamespaceList(
+        process.env.ACCESS_TOKEN as string,
+        "project",
+);
+
+console.log(namespaceList);
+```
+
+You can refer to [test file](../../src/__tests__/service/user.info.service.test.ts) for the full usage of both `async` function call and `callback` function call.
+Refer to the following instance:
+
+- getUserNamespaceList async
+- getUserNamespaceList callback
