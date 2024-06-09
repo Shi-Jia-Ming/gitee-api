@@ -88,7 +88,7 @@ test("getUserFollowingList callback", () => {
   );
 });
 
-test("getUserNamespaceList async", async () => {
+test.only("getUserNamespaceList async", async () => {
   const namespaceList: NamespaceInfo[] = await UserInfoService.getUserNamespaceList(
     process.env.ACCESS_TOKEN as string,
     "project"
@@ -97,7 +97,7 @@ test("getUserNamespaceList async", async () => {
   console.log(namespaceList);
 });
 
-test.only("getUserNamespaceList callback", () => {
+test("getUserNamespaceList callback", () => {
   UserInfoService.getUserNamespaceList(
     process.env.ACCESS_TOKEN as string,
     "project",
